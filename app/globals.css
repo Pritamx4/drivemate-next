@@ -195,21 +195,29 @@ input, select, textarea { font-family: inherit; }
   font-size: 15px;
   font-weight: 500;
   color: #aaa;
-  transition: color 0.2s ease;
+  transition: color 0.25s ease;
   position: relative;
+  display: inline-block;
+  padding: 4px 0;
 }
 .navbar-links a:hover, .navbar-links a.active {
   color: #fff;
 }
-.navbar-links a.active::after {
+.navbar-links a::after {
   content: '';
   position: absolute;
   bottom: -4px;
   left: 0;
-  right: 0;
+  width: 0;
   height: 2px;
-  background: var(--primary);
+  background: var(--gradient-primary);
   border-radius: 2px;
+  box-shadow: 0 0 8px rgba(0, 212, 255, 0.6);
+  transition: width 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+.navbar-links a:hover::after,
+.navbar-links a.active::after {
+  width: 100%;
 }
 .navbar-actions {
   display: flex;

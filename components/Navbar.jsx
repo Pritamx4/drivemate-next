@@ -9,6 +9,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [whatsapp, setWhatsapp] = useState('7082628413');
+  const [currentHash, setCurrentHash] = useState('');
   const pathname = usePathname();
 
   useEffect(() => {
@@ -18,14 +19,52 @@ export default function Navbar() {
         if (data.whatsapp) setWhatsapp(data.whatsapp);
       })
       .catch(console.error);
-
-    const handleScroll = () => setScrolled(window.scrollY > 30);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Update hash and scroll position listener
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 30);
+
+      // On home page, detect current section dynamically while scrolling
+      if (pathname === '/') {
+        const aboutEl = document.getElementById('about');
+        const contactEl = document.getElementById('contact');
+        const scrollPos = window.scrollY + 280;
+
+        if (contactEl && scrollPos >= contactEl.offsetTop) {
+          setCurrentHash('#contact');
+        } else if (aboutEl && scrollPos >= aboutEl.offsetTop) {
+          setCurrentHash('#about');
+        } else {
+          setCurrentHash('');
+        }
+      }
+    };
+
+    const handleHashChange = () => {
+      if (typeof window !== 'undefined') {
+        setCurrentHash(window.location.hash);
+      }
+    };
+
+    handleHashChange();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('hashchange', handleHashChange);
+    window.addEventListener('popstate', handleHashChange);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('hashchange', handleHashChange);
+      window.removeEventListener('popstate', handleHashChange);
+    };
+  }, [pathname]);
 
   useEffect(() => {
     setMenuOpen(false);
+    if (pathname !== '/') {
+      setCurrentHash('');
+    }
   }, [pathname]);
 
   const navLinks = [
@@ -35,10 +74,44 @@ export default function Navbar() {
     { label: 'Contact', path: '/#contact' },
   ];
 
+  const isActive = (linkPath) => {
+    if (linkPath === '/') {
+      return pathname === '/' && (!currentHash || currentHash === '#');
+    }
+    if (linkPath.startsWith('/#')) {
+      const targetHash = linkPath.substring(1); // e.g. '#about'
+      return pathname === '/' && currentHash === targetHash;
+    }
+    if (linkPath === '/cars') {
+      return pathname.startsWith('/cars') || pathname.startsWith('/booking');
+    }
+    return pathname === linkPath;
+  };
+
+  const handleLinkClick = (path) => {
+    setMenuOpen(false);
+    if (path.includes('#')) {
+      const hash = path.substring(path.indexOf('#'));
+      setCurrentHash(hash);
+      const id = hash.replace('#', '');
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else if (path === '/') {
+      setCurrentHash('');
+      if (pathname === '/') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    } else {
+      setCurrentHash('');
+    }
+  };
+
   return (
     <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
       <div className="container navbar-inner">
-        <Link href="/" className="navbar-logo">
+        <Link href="/" className="navbar-logo" onClick={() => handleLinkClick('/')}>
           <div className="logo-icon">
             <Car size={22} />
           </div>
@@ -50,8 +123,8 @@ export default function Navbar() {
             <li key={link.path}>
               <Link
                 href={link.path}
-                className={pathname === link.path ? 'active' : ''}
-                onClick={() => setMenuOpen(false)}
+                className={isActive(link.path) ? 'active' : ''}
+                onClick={() => handleLinkClick(link.path)}
               >
                 {link.label}
               </Link>

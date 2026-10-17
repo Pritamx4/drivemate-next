@@ -14,11 +14,11 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="icon" href="/favicon.png" />
       </head>
-      <body>
+      <body suppressHydrationWarning>
         <CarProvider>
           <Suspense fallback={<nav className="navbar" />}>
             <Navbar />

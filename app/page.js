@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Search, MapPin, Calendar, Shield, Zap, Headphones, Star, ArrowRight, Car, Phone } from 'lucide-react';
@@ -11,6 +11,11 @@ export default function HomePage() {
   const { cars } = useCars();
   const [pickup, setPickup] = useState('');
   const [returnDate, setReturnDate] = useState('');
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const featured = cars.filter(c => c.available).slice(0, 3);
 
@@ -28,7 +33,7 @@ export default function HomePage() {
   };
 
   return (
-    <main className="home">
+    <main className="home" suppressHydrationWarning>
       {/* Hero */}
       <section className="hero">
         <div className="hero-bg-orb orb1"></div>
@@ -149,26 +154,32 @@ export default function HomePage() {
             </Link>
           </div>
           <div className="featured-grid">
-            {featured.map(car => (
-              <div key={car.id} className="featured-car-card card">
-                <div className="fc-image">
-                  <img src={car.image} alt={`Rent ${car.name}`} className="fc-car-img" />
-                  <span className="fc-category badge">{car.category}</span>
-                  <div className="fc-available-dot" title="Available for rental"></div>
-                </div>
-                <div className="fc-body">
-                  <div className="fc-header">
-                    <h3>{car.name}</h3>
-                    <div className="fc-rating"><Star size={14} fill="#f5a623" color="#f5a623" /> {car.rating}</div>
+            {mounted ? (
+              featured.map(car => (
+                <div key={car.id || car._id || car.name} className="featured-car-card card">
+                  <div className="fc-image">
+                    <img src={car.image} alt={`Rent ${car.name}`} className="fc-car-img" />
+                    <span className="fc-category badge">{car.category}</span>
+                    <div className="fc-available-dot" title="Available for rental"></div>
                   </div>
-                  <p className="fc-tagline">Min. age {car.minAge} · {car.mileageLimit}</p>
-                  <div className="fc-price">{formatINR(car.pricePerDay)}<span>/day</span></div>
-                  <Link href={`/cars/${car.id}`} className="btn-primary fc-btn">
-                    Rent Now <ArrowRight size={15} />
-                  </Link>
+                  <div className="fc-body">
+                    <div className="fc-header">
+                      <h3>{car.name}</h3>
+                      <div className="fc-rating"><Star size={14} fill="#f5a623" color="#f5a623" /> {car.rating}</div>
+                    </div>
+                    <p className="fc-tagline">Min. age {car.minAge} · {car.mileageLimit}</p>
+                    <div className="fc-price">{formatINR(car.pricePerDay)}<span>/day</span></div>
+                    <Link href={`/cars/${car.id || car._id}`} className="btn-primary fc-btn">
+                      Rent Now <ArrowRight size={15} />
+                    </Link>
+                  </div>
                 </div>
+              ))
+            ) : (
+              <div className="loading-box" style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '30px', color: 'var(--text-muted)' }}>
+                Loading top rentals...
               </div>
-            ))}
+            )}
           </div>
         </div>
       </section>

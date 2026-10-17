@@ -109,7 +109,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
+    <nav className={`navbar ${scrolled ? 'scrolled' : ''}`} suppressHydrationWarning>
       <div className="container navbar-inner">
         <Link href="/" className="navbar-logo" onClick={() => handleLinkClick('/')}>
           <div className="logo-icon">

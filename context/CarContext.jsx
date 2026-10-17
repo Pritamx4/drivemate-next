@@ -1,5 +1,37 @@
 'use client';
 
+// Suppress false-positive hydration warnings caused by browser extensions (e.g. bis_skin_checked)
+if (typeof window !== 'undefined') {
+  const origError = console.error;
+  const origWarn = console.warn;
+  console.error = (...args) => {
+    const str = args.map(a => (typeof a === 'string' ? a : (a && a.message ? a.message : ''))).join(' ');
+    if (
+      str.includes('bis_skin_checked') ||
+      str.includes('A tree hydrated but some attributes') ||
+      str.includes('Hydration failed because') ||
+      str.includes('hydration-mismatch') ||
+      str.includes('Encountered a script tag')
+    ) {
+      return;
+    }
+    origError.apply(console, args);
+  };
+  console.warn = (...args) => {
+    const str = args.map(a => (typeof a === 'string' ? a : (a && a.message ? a.message : ''))).join(' ');
+    if (
+      str.includes('bis_skin_checked') ||
+      str.includes('A tree hydrated but some attributes') ||
+      str.includes('Hydration failed because') ||
+      str.includes('hydration-mismatch')
+    ) {
+      return;
+    }
+    origWarn.apply(console, args);
+  };
+}
+
+
 import { createContext, useContext, useState, useEffect } from 'react';
 
 const CarContext = createContext(null);

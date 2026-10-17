@@ -34,7 +34,7 @@ export default function BrowsePage() {
     });
 
   return (
-    <main className="browse-page">
+    <main className="browse-page" suppressHydrationWarning>
       <div className="browse-header">
         <div className="container">
           <h1>Rent a <span className="gradient-text">Premium Car</span></h1>
@@ -165,7 +165,7 @@ export default function BrowsePage() {
           ) : (
             <div className="cars-grid">
               {filtered.map(car => (
-                <div key={car.id} className="featured-car-card card">
+                <div key={car.id || car._id || car.name} className="featured-car-card card">
                   <div className="fc-image">
                     <img src={car.image} alt={car.name} className="fc-car-img" />
                     <span className="fc-category badge">{car.category}</span>

@@ -24,7 +24,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="footer">
+    <footer className="footer" suppressHydrationWarning>
       <div className="container">
         <div className="footer-grid">
           {/* Brand & Mission */}
@@ -114,9 +114,8 @@ export default function Footer() {
             </h4>
             <div className="footer-section-content">
               <p><MapPin size={16} /> MG Road, Sector 29, Gurgaon, Haryana 122002</p>
-              <p><Phone size={16} /> +91 70826 28413</p>
+              <p><Phone size={16} /> +91 9999999999</p>
               <p><Mail size={16} /> support@drivemate.in</p>
-              <p className="footer-timing">⏰ Support Available: 24/7</p>
             </div>
           </div>
         </div>

@@ -1,36 +1,96 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+﻿# DriveMate - Full-stack Next.js Car Rental Application 🚗
 
-## Getting Started
+A full-stack car rental web application built with **Next.js (App Router)**, **JavaScript**, **Tailwind CSS**, and **MongoDB (Mongoose)**.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 🚀 Features
+
+- **Fleet Catalog & Dynamic Filtering**: Filter by car type (SUV, Sedan, Hatchback, Sports, Electric), max rental price, and transmission (Auto / Manual).
+- **Vehicle Detail Showcase**: Specs, included amenities, review ratings, mileage limit, and dynamic day-to-day rental calculator.
+- **WhatsApp Direct Booking**: Instant rental inquiry generation that dispatches all customer and car details directly to the owner via WhatsApp.
+- **Admin Control Center**:
+  - JWT-authenticated secure Admin Dashboard.
+  - Add new cars to the fleet with direct image upload.
+  - Toggle vehicle availability (Available / Unavailable) on the fly.
+  - Manage and track customer booking statuses (`Pending`, `Confirmed`, `Completed`, `Cancelled`).
+  - One-click initial fleet database seeding.
+- **Responsive Dark Cyber Aesthetic**: Built with glassmorphism, glowing accents, modern typography, and mobile-friendly navigation.
+
+---
+
+## 🛠️ Tech Stack
+
+- **Framework**: [Next.js](https://nextjs.org/) (App Router)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/) + Custom Glassmorphic Dark Design System
+- **Database**: [MongoDB](https://www.mongodb.com/) with [Mongoose](https://mongoosejs.com/)
+- **Icons**: [Lucide React](https://lucide.dev/)
+- **Authentication**: JWT (`jsonwebtoken`) + `bcryptjs`
+
+---
+
+## 📂 Project Structure
+
+```
+drivemate-next/
+├── app/
+│   ├── layout.js              # Global layout with fonts and Navbar/Footer
+│   ├── globals.css            # Complete design system & glassmorphism
+│   ├── page.js                # Landing page with hero & popular rentals
+│   ├── cars/
+│   │   ├── page.js            # Vehicle collection & filter sidebar
+│   │   └── [id]/              # Car details & pricing calculator
+│   ├── booking/
+│   │   └── [id]/              # Customer checkout form & WhatsApp dispatch
+│   ├── confirmation/          # Celebration screen with instructions
+│   ├── admin-login/           # Secure admin portal login
+│   ├── admin/                 # Fleet & booking management dashboard
+│   └── api/
+│       ├── auth/login/        # Admin authentication endpoint
+│       ├── cars/              # CRUD endpoints for vehicle fleet
+│       ├── bookings/          # Endpoints for rental requests & status updates
+│       ├── upload/            # Multipart image upload handler
+│       ├── settings/          # Public settings (owner WhatsApp number)
+│       └── seed/              # Database seeding endpoint
+├── components/
+│   ├── Navbar.jsx             # Top bar with WhatsApp quick link & drawer
+│   └── Footer.jsx             # Multi-column footer with accordions
+├── context/
+│   └── CarContext.jsx         # Global fleet state & operations
+├── lib/
+│   ├── mongodb.js             # Cached Mongoose connection helper
+│   └── auth.js                # JWT token verification middleware
+├── models/
+│   ├── Car.js                 # Vehicle schema
+│   ├── Booking.js             # Reservation schema
+│   └── Admin.js               # Admin credentials schema
+└── public/
+    ├── cars/                  # High-res car transparent assets
+    └── uploads/               # Uploaded car images
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## ⚙️ Getting Started
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 1. Environment Setup
+The `.env.local` file is already configured:
+```env
+MONGO_URI=mongodb+srv://...
+JWT_SECRET=your_jwt_secret
+ADMIN_SEED_USERNAME=admin
+ADMIN_SEED_PASSWORD=password123
+OWNER_WHATSAPP=7082628413
+```
 
-## Learn More
+### 2. Run the Development Server
+```bash
+npm run dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+Open [http://localhost:3000](http://localhost:3000) with your browser to view the application.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 3. Admin Credentials
+- **URL**: [http://localhost:3000/admin-login](http://localhost:3000/admin-login)
+- **Username**: `admin`
+- **Password**: `password123`

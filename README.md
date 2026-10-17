@@ -1,6 +1,6 @@
-﻿# DriveMate - Full-stack Next.js Car Rental Application 🚗
+# DriveMate - Full-stack Next.js Car Rental Application 🚗
 
-A full-stack car rental web application built with **Next.js (App Router)**, **JavaScript**, **Tailwind CSS**, and **MongoDB (Mongoose)**.
+A modern, full-stack car rental web application built with **Next.js (App Router)**, **JavaScript**, **Tailwind CSS**, and **MongoDB (Mongoose)**.
 
 ---
 
@@ -8,9 +8,9 @@ A full-stack car rental web application built with **Next.js (App Router)**, **J
 
 - **Fleet Catalog & Dynamic Filtering**: Filter by car type (SUV, Sedan, Hatchback, Sports, Electric), max rental price, and transmission (Auto / Manual).
 - **Vehicle Detail Showcase**: Specs, included amenities, review ratings, mileage limit, and dynamic day-to-day rental calculator.
-- **WhatsApp Direct Booking**: Instant rental inquiry generation that dispatches all customer and car details directly to the owner via WhatsApp.
+- **WhatsApp Direct Booking**: Instant rental inquiry generation that dispatches customer and car details directly to the owner via WhatsApp.
 - **Admin Control Center**:
-  - JWT-authenticated secure Admin Dashboard.
+  - Secure JWT-authenticated Admin Dashboard.
   - Add new cars to the fleet with direct image upload.
   - Toggle vehicle availability (Available / Unavailable) on the fly.
   - Manage and track customer booking statuses (`Pending`, `Confirmed`, `Completed`, `Cancelled`).
@@ -50,10 +50,10 @@ drivemate-next/
 │       ├── cars/              # CRUD endpoints for vehicle fleet
 │       ├── bookings/          # Endpoints for rental requests & status updates
 │       ├── upload/            # Multipart image upload handler
-│       ├── settings/          # Public settings (owner WhatsApp number)
+│       ├── settings/          # Public settings
 │       └── seed/              # Database seeding endpoint
 ├── components/
-│   ├── Navbar.jsx             # Top bar with WhatsApp quick link & drawer
+│   ├── Navbar.jsx             # Top bar with WhatsApp quick link & mobile drawer
 │   └── Footer.jsx             # Multi-column footer with accordions
 ├── context/
 │   └── CarContext.jsx         # Global fleet state & operations
@@ -74,13 +74,9 @@ drivemate-next/
 ## ⚙️ Getting Started
 
 ### 1. Environment Setup
-The `.env.local` file is already configured:
-```env
-MONGO_URI=mongodb+srv://...
-JWT_SECRET=your_jwt_secret
-ADMIN_SEED_USERNAME=admin
-ADMIN_SEED_PASSWORD=password123
-OWNER_WHATSAPP=7082628413
+Create a `.env.local` file in the root directory (refer to `.env.example` for required variables):
+```bash
+cp .env.example .env.local
 ```
 
 ### 2. Run the Development Server
@@ -89,8 +85,3 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to view the application.
-
-### 3. Admin Credentials
-- **URL**: [http://localhost:3000/admin-login](http://localhost:3000/admin-login)
-- **Username**: `admin`
-- **Password**: `password123`

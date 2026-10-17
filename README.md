@@ -74,9 +74,9 @@ drivemate-next/
 ## ⚙️ Getting Started
 
 ### 1. Environment Setup
-Create a `.env.local` file in the root directory (refer to `.env.example` for required variables):
+Create a `.env` file in the root directory (refer to `.env.example` for required variables):
 ```bash
-cp .env.example .env.local
+cp .env.example .env
 ```
 
 ### 2. Run the Development Server

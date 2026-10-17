@@ -123,9 +123,6 @@ export default function Footer() {
 
         <div className="footer-bottom">
           <p>© {currentYear} DriveMate Technologies Pvt. Ltd. All rights reserved.</p>
-          <div className="footer-bottom-links">
-            <Link href="/admin">Admin Portal</Link>
-          </div>
         </div>
       </div>
     </footer>

@@ -36,7 +36,7 @@ export default function AdminLoginPage() {
         localStorage.setItem('dm_admin_token', data.token);
         router.replace('/admin');
       } else {
-        setError(data.message || 'Login failed. Check your credentials.');
+        setError(data.message || 'Invalid username or password');
       }
     } catch (err) {
       setError('Connection failed. Please check server.');
@@ -54,7 +54,7 @@ export default function AdminLoginPage() {
         </div>
 
         <h1 style={{ fontSize: '24px', fontWeight: 800, marginBottom: '8px' }}>Admin Portal</h1>
-        <p style={{ color: 'var(--text-muted)', fontSize: '14px', marginBottom: '28px' }}>Sign in to manage fleet and bookings</p>
+        <p style={{ color: 'var(--text-muted)', fontSize: '14px', marginBottom: '28px' }}>Sign in to manage your fleet</p>
 
         <form onSubmit={handleSubmit} style={{ textAlign: 'left', display: 'flex', flexDirection: 'column', gap: '16px' }}>
           <div>
@@ -106,12 +106,8 @@ export default function AdminLoginPage() {
           </button>
         </form>
 
-        <div style={{ marginTop: '24px', fontSize: '13px', color: '#666' }}>
-          Default: <code style={{ color: 'var(--primary)' }}>admin</code> / <code style={{ color: 'var(--primary)' }}>password123</code>
-        </div>
-
-        <Link href="/" style={{ display: 'inline-block', marginTop: '18px', color: '#888', fontSize: '13px' }}>
-          ← Back to DriveMate Home
+        <Link href="/" style={{ display: 'inline-block', marginTop: '24px', color: '#888', fontSize: '13px' }}>
+          ← Back to Homepage
         </Link>
       </div>
     </div>

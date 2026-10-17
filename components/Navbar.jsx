@@ -57,9 +57,6 @@ export default function Navbar() {
               </Link>
             </li>
           ))}
-          <li className="mobile-only-admin-link">
-            <Link href="/admin" onClick={() => setMenuOpen(false)}>Admin Panel</Link>
-          </li>
         </ul>
 
         <div className="navbar-actions">

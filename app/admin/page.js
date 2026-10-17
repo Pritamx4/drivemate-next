@@ -199,7 +199,7 @@ export default function AdminDashboardPage() {
         )}
 
         {/* Stats Row */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px', marginBottom: '36px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '20px', marginBottom: '36px' }}>
           <div className="card" style={{ padding: '24px', borderRadius: '16px' }}>
             <span style={{ fontSize: '12px', color: '#888', textTransform: 'uppercase', fontWeight: 700 }}>Total Fleet</span>
             <div style={{ fontSize: '32px', fontWeight: 800, color: 'var(--primary)', fontFamily: 'var(--font-tech)', marginTop: '4px' }}>{totalCars}</div>
@@ -382,7 +382,7 @@ export default function AdminDashboardPage() {
               </div>
 
               <form onSubmit={handleCreateCar} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: '14px' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '14px' }}>
                   <div>
                     <label style={{ fontSize: '12px', color: '#aaa', display: 'block', marginBottom: '4px' }}>Vehicle Name *</label>
                     <input
@@ -406,7 +406,7 @@ export default function AdminDashboardPage() {
                   </div>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(110px, 1fr))', gap: '12px' }}>
                   <div>
                     <label style={{ fontSize: '12px', color: '#aaa', display: 'block', marginBottom: '4px' }}>Price/Day (₹) *</label>
                     <input

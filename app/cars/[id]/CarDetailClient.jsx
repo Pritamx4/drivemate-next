@@ -35,7 +35,7 @@ export default function CarDetailClient({ params }) {
     : 1;
 
   if (loading) {
-    return <div style={{ padding: '160px 24px', textAlign: 'center' }}>Loading car details...</div>;
+    return <div className="loading-box" style={{ padding: '160px 24px' }}>Loading car details...</div>;
   }
 
   if (!car) {
@@ -54,72 +54,72 @@ export default function CarDetailClient({ params }) {
   };
 
   return (
-    <main style={{ paddingTop: '100px', minHeight: '100vh', paddingBottom: '80px' }}>
+    <main className="detail-page">
       <div className="container">
         {/* Breadcrumb */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', color: '#888', marginBottom: '24px' }}>
+        <div className="breadcrumb">
           <Link href="/">Home</Link>
           <span>/</span>
           <Link href="/cars">Rent a Car</Link>
           <span>/</span>
-          <span style={{ color: 'var(--primary)', fontWeight: 600 }}>{car.name}</span>
+          <span className="bc-current">{car.name}</span>
         </div>
 
         {car.available === false && (
-          <div style={{ background: 'rgba(255, 68, 68, 0.1)', border: '1px solid rgba(255, 68, 68, 0.3)', color: '#ff6666', padding: '16px', borderRadius: '12px', marginBottom: '24px' }}>
+          <div className="unavail-banner">
             ⚠️ This car is currently unavailable for rental. Please check back later or browse other cars.
           </div>
         )}
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: '36px', alignItems: 'start' }}>
+        <div className="detail-layout">
           {/* Left Column: Showcase & Details */}
-          <div>
-            <div className="card" style={{ padding: '40px', borderRadius: '20px', position: 'relative', textAlign: 'center', marginBottom: '28px' }}>
-              <span className="badge" style={{ position: 'absolute', top: '20px', left: '20px' }}>{car.category}</span>
+          <div className="detail-left">
+            <div className="card detail-car-showcase">
+              <span className="badge detail-cat-badge">{car.category}</span>
               <img
                 src={car.image}
                 alt={car.name}
-                style={{ width: '100%', maxHeight: '340px', objectFit: 'contain', filter: 'drop-shadow(0 20px 30px rgba(0,0,0,0.8))' }}
+                className="detail-car-real-img"
               />
             </div>
 
-            <div className="card" style={{ padding: '30px', borderRadius: '16px', marginBottom: '28px' }}>
-              <h3 style={{ fontSize: '20px', fontWeight: 700, marginBottom: '14px' }}>About This Rental</h3>
-              <p style={{ color: 'var(--text-muted)', lineHeight: '1.7', marginBottom: '20px' }}>{car.description || car.desc}</p>
-              <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', fontSize: '14px', color: '#bbb' }}>
+            <div className="card detail-desc-card">
+              <h3>About This Rental</h3>
+              <p>{car.description || car.desc}</p>
+              <div className="rental-meta">
                 <span>📅 Min. age: {car.minAge}+</span>
                 <span>🛣️ {car.mileageLimit}</span>
                 <span>🔄 Free cancellation 24h prior</span>
               </div>
             </div>
 
-            <div className="card" style={{ padding: '30px', borderRadius: '16px', marginBottom: '28px' }}>
-              <h3 style={{ fontSize: '20px', fontWeight: 700, marginBottom: '18px' }}>Included Features</h3>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '16px' }}>
+            <div className="card detail-features-card">
+              <h3>Included Features</h3>
+              <div className="features-list">
                 {EXTRA_FEATURES.map(f => (
-                  <div key={f.label} style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '14px', color: '#ccc' }}>
-                    <span style={{ color: 'var(--primary)' }}>{f.icon}</span>
+                  <div key={f.label} className="feature-item">
+                    <span className="feat-icon">{f.icon}</span>
                     <span>{f.label}</span>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className="card" style={{ padding: '30px', borderRadius: '16px' }}>
-              <h3 style={{ fontSize: '20px', fontWeight: 700, marginBottom: '20px' }}>Customer Reviews</h3>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
+            <div className="card detail-reviews-card">
+              <h3>Customer Reviews</h3>
+              <div className="reviews-list">
                 {REVIEWS.map(r => (
-                  <div key={r.name} style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.06)', paddingBottom: '16px' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
-                      <strong style={{ fontSize: '15px' }}>{r.name}</strong>
-                      <span style={{ fontSize: '12px', color: '#888' }}>{r.date}</span>
+                  <div key={r.name} className="review-item">
+                    <div className="review-top">
+                      <strong>{r.name}</strong>
+                      <span className="review-date">{r.date}</span>
                     </div>
-                    <div style={{ display: 'flex', gap: '4px', marginBottom: '8px' }}>
+                    <div className="review-stars">
                       {[...Array(r.rating)].map((_, i) => (
                         <Star key={i} size={14} fill="#f5a623" color="#f5a623" />
                       ))}
                     </div>
-                    <p style={{ fontSize: '14px', color: 'var(--text-muted)' }}>{r.text}</p>
+                    <p className="review-text">{r.text}</p>
                   </div>
                 ))}
               </div>
@@ -127,79 +127,77 @@ export default function CarDetailClient({ params }) {
           </div>
 
           {/* Right Column: Pricing & Quick Booking Widget */}
-          <div style={{ position: 'sticky', top: '100px' }}>
-            <div className="card" style={{ padding: '32px', borderRadius: '20px', boxShadow: 'var(--shadow-card)' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' }}>
+          <div className="detail-right">
+            <div className="card detail-pricing-card">
+              <div className="dp-header">
                 <div>
-                  <h1 style={{ fontSize: '26px', fontWeight: 800, marginBottom: '6px' }}>{car.name}</h1>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#f5a623', fontSize: '14px' }}>
+                  <h1 className="detail-car-name">{car.name}</h1>
+                  <div className="detail-rating-row">
                     <Star size={16} fill="#f5a623" color="#f5a623" />
                     <strong>{car.rating}</strong>
-                    <span style={{ color: '#888' }}>({car.reviews} reviews)</span>
+                    <span className="review-count">({car.reviews} reviews)</span>
                   </div>
                 </div>
-                <div style={{ textAlign: 'right' }}>
-                  <div style={{ fontSize: '28px', fontWeight: 800, color: 'var(--primary)', fontFamily: 'var(--font-tech)' }}>
+                <div className="dp-price-wrap">
+                  <div className="dp-price">
                     {formatINR(car.pricePerDay)}
                   </div>
-                  <span style={{ fontSize: '12px', color: '#888' }}>per day</span>
+                  <span className="dp-per-day">per day</span>
                 </div>
               </div>
 
-              <div style={{ borderTop: '1px solid rgba(255, 255, 255, 0.08)', borderBottom: '1px solid rgba(255, 255, 255, 0.08)', padding: '20px 0', margin: '20px 0' }}>
-                <h4 style={{ fontSize: '14px', color: '#888', textTransform: 'uppercase', marginBottom: '14px', letterSpacing: '0.5px' }}>Select Dates</h4>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                  <div>
-                    <label style={{ fontSize: '12px', color: '#aaa', display: 'block', marginBottom: '4px' }}>Pickup Date</label>
+              <div className="dp-dates-box">
+                <h4>Select Dates</h4>
+                <div className="date-pickers-grid">
+                  <div className="date-field">
+                    <label>Pickup Date</label>
                     <input
                       type="date"
                       value={pickup}
                       onChange={e => setPickup(e.target.value)}
-                      style={{ width: '100%', padding: '10px 14px', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '8px', color: '#fff', colorScheme: 'dark' }}
                     />
                   </div>
-                  <div>
-                    <label style={{ fontSize: '12px', color: '#aaa', display: 'block', marginBottom: '4px' }}>Return Date</label>
+                  <div className="date-field">
+                    <label>Return Date</label>
                     <input
                       type="date"
                       value={returnDate}
                       onChange={e => setReturnDate(e.target.value)}
-                      style={{ width: '100%', padding: '10px 14px', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '8px', color: '#fff', colorScheme: 'dark' }}
                     />
                   </div>
                 </div>
               </div>
 
               {/* Cost Summary */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '24px', fontSize: '14px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', color: '#aaa' }}>
+              <div className="cost-summary-list">
+                <div className="cost-row">
                   <span>Duration</span>
                   <span>{days} {days === 1 ? 'day' : 'days'}</span>
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', color: '#aaa' }}>
+                <div className="cost-row">
                   <span>Base Rate</span>
                   <span>{formatINR(car.pricePerDay)} × {days}</span>
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', color: '#aaa' }}>
+                <div className="cost-row">
                   <span>Insurance & Roadside Aid</span>
                   <span style={{ color: '#25D366' }}>Included Free</span>
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '18px', fontWeight: 800, color: '#fff', paddingTop: '10px', borderTop: '1px solid rgba(255, 255, 255, 0.08)' }}>
+                <div className="cost-row total-row">
                   <span>Total Payable</span>
-                  <span style={{ color: 'var(--primary)' }}>{formatINR(car.pricePerDay * days)}</span>
+                  <span className="total-amount">{formatINR(car.pricePerDay * days)}</span>
                 </div>
               </div>
 
               <button
                 onClick={handleBookNow}
                 disabled={car.available === false}
-                className="btn-primary"
-                style={{ width: '100%', padding: '16px', fontSize: '16px', opacity: car.available === false ? 0.5 : 1 }}
+                className="btn-primary w-full book-btn"
+                style={{ opacity: car.available === false ? 0.5 : 1 }}
               >
                 Proceed to Booking <ArrowRight size={18} />
               </button>
 
-              <p style={{ textAlign: 'center', fontSize: '12px', color: '#777', marginTop: '16px' }}>
+              <p className="instant-notice">
                 ⚡ Instant WhatsApp confirmation · No prepayment required
               </p>
             </div>

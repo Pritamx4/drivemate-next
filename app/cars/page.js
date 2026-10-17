@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Search, SlidersHorizontal, Star, Fuel, Users, ArrowRight, Plus, Minus } from 'lucide-react';
+import { Search, SlidersHorizontal, Star, Fuel, Users, ArrowRight, Plus, Minus, X } from 'lucide-react';
 import { useCars, formatINR } from '@/context/CarContext';
 
 const CATEGORIES = ['All', 'SUV', 'Hatchback', 'Sedan', 'Sports', 'Electric'];
@@ -34,139 +34,119 @@ export default function BrowsePage() {
     });
 
   return (
-    <main style={{ paddingTop: '100px', minHeight: '100vh', paddingBottom: '80px' }}>
-      <div style={{ background: 'linear-gradient(180deg, rgba(0, 212, 255, 0.05) 0%, transparent 100%)', padding: '40px 0 20px', borderBottom: '1px solid rgba(255, 255, 255, 0.05)', marginBottom: '40px' }}>
+    <main className="browse-page">
+      <div className="browse-header">
         <div className="container">
-          <h1 style={{ fontSize: '38px', fontWeight: 800 }}>Rent a <span className="gradient-text">Premium Car</span></h1>
-          <p style={{ color: 'var(--text-muted)' }}>{filtered.length} vehicles available for your self-drive journey</p>
+          <h1>Rent a <span className="gradient-text">Premium Car</span></h1>
+          <p>{filtered.length} vehicles available for your self-drive journey</p>
         </div>
       </div>
 
-      <div className="container" style={{ display: 'grid', gridTemplateColumns: '280px 1fr', gap: '32px', alignItems: 'start' }}>
+      <div className="container browse-layout">
         {/* Sidebar Filters */}
-        <aside className="card" style={{ padding: '24px', borderRadius: '16px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px' }}>
-            <h3 style={{ fontSize: '18px', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <SlidersHorizontal size={18} color="var(--primary)" /> Filters
+        <aside className={`sidebar card ${isMobileFilterOpen ? 'mobile-open' : ''}`}>
+          <div className="sidebar-header" onClick={() => setIsMobileFilterOpen(!isMobileFilterOpen)}>
+            <h3 className="sidebar-title">
+              <SlidersHorizontal size={18} color="var(--primary)" />
+              <span>Filters</span>
             </h3>
+            <div className="mobile-filter-toggle">
+              {isMobileFilterOpen ? <Minus size={18} /> : <Plus size={18} />}
+            </div>
+          </div>
+
+          <div className="filter-content">
+            <div className="filter-group">
+              <label>Car Type</label>
+              <div className="category-pills">
+                {CATEGORIES.map(cat => (
+                  <button
+                    key={cat}
+                    onClick={() => setActiveCategory(cat)}
+                    className={`cat-pill ${activeCategory === cat ? 'active' : ''}`}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="filter-group">
+              <div className="price-label-row">
+                <label>Max Rent</label>
+                <span className="price-val">{formatINR(maxPrice)}/day</span>
+              </div>
+              <input
+                type="range"
+                min={1000}
+                max={15000}
+                step={500}
+                value={maxPrice}
+                onChange={e => setMaxPrice(+e.target.value)}
+                className="price-slider"
+              />
+              <div className="price-range-labels">
+                <span>₹1,000</span>
+                <span>₹15,000</span>
+              </div>
+            </div>
+
+            <div className="filter-group">
+              <label>Transmission</label>
+              <div className="radio-group">
+                {['All', 'Auto', 'Manual'].map(t => (
+                  <label key={t} className="form-check-label">
+                    <input
+                      type="radio"
+                      name="trans"
+                      checked={transmission === t}
+                      onChange={() => setTransmission(t)}
+                    />
+                    <span>{t}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            <div className="filter-group">
+              <label className="form-check-label">
+                <input
+                  type="checkbox"
+                  checked={showUnavailable}
+                  onChange={e => setShowUnavailable(e.target.checked)}
+                />
+                <span>Show unavailable cars</span>
+              </label>
+            </div>
+
             <button
               onClick={() => { setActiveCategory('All'); setMaxPrice(15000); setTransmission('All'); setSearch(''); }}
-              style={{ background: 'transparent', color: 'var(--primary)', fontSize: '12px', fontWeight: 600 }}
+              className="btn-outline w-full"
+              style={{ marginTop: '10px', width: '100%', padding: '10px' }}
             >
-              Reset
+              Reset Filters
             </button>
-          </div>
-
-          <div style={{ marginBottom: '24px' }}>
-            <label style={{ fontSize: '12px', textTransform: 'uppercase', color: '#888', fontWeight: 700, display: 'block', marginBottom: '10px' }}>Car Type</label>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-              {CATEGORIES.map(cat => (
-                <button
-                  key={cat}
-                  onClick={() => setActiveCategory(cat)}
-                  style={{
-                    padding: '6px 14px',
-                    borderRadius: '20px',
-                    fontSize: '13px',
-                    fontWeight: 500,
-                    background: activeCategory === cat ? 'var(--primary)' : 'rgba(255, 255, 255, 0.05)',
-                    color: activeCategory === cat ? '#000' : '#ccc',
-                    border: '1px solid',
-                    borderColor: activeCategory === cat ? 'var(--primary)' : 'rgba(255, 255, 255, 0.1)',
-                    transition: 'all 0.2s ease'
-                  }}
-                >
-                  {cat}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div style={{ marginBottom: '24px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-              <label style={{ fontSize: '12px', textTransform: 'uppercase', color: '#888', fontWeight: 700 }}>Max Rent</label>
-              <span style={{ color: 'var(--primary)', fontWeight: 700, fontFamily: 'var(--font-tech)' }}>{formatINR(maxPrice)}/day</span>
-            </div>
-            <input
-              type="range"
-              min={1000}
-              max={15000}
-              step={500}
-              value={maxPrice}
-              onChange={e => setMaxPrice(+e.target.value)}
-              style={{ width: '100%', accentColor: 'var(--primary)' }}
-            />
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: '#666', marginTop: '4px' }}>
-              <span>₹1,000</span>
-              <span>₹15,000</span>
-            </div>
-          </div>
-
-          <div style={{ marginBottom: '24px' }}>
-            <label style={{ fontSize: '12px', textTransform: 'uppercase', color: '#888', fontWeight: 700, display: 'block', marginBottom: '10px' }}>Transmission</label>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              {['All', 'Auto', 'Manual'].map(t => (
-                <label key={t} style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '14px', cursor: 'pointer' }}>
-                  <input
-                    type="radio"
-                    name="trans"
-                    checked={transmission === t}
-                    onChange={() => setTransmission(t)}
-                    style={{ accentColor: 'var(--primary)' }}
-                  />
-                  <span>{t}</span>
-                </label>
-              ))}
-            </div>
-          </div>
-
-          <div style={{ marginBottom: '16px' }}>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '14px', cursor: 'pointer' }}>
-              <input
-                type="checkbox"
-                checked={showUnavailable}
-                onChange={e => setShowUnavailable(e.target.checked)}
-                style={{ accentColor: 'var(--primary)' }}
-              />
-              <span>Show unavailable cars</span>
-            </label>
           </div>
         </aside>
 
         {/* Cars Content */}
-        <div>
+        <div className="cars-content-area">
           {/* Search bar & Sort */}
-          <div style={{ display: 'flex', gap: '16px', marginBottom: '28px', flexWrap: 'wrap' }}>
-            <div style={{ flex: 1, minWidth: '240px', position: 'relative' }}>
-              <Search size={18} style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', color: '#777' }} />
+          <div className="cars-topbar">
+            <div className="search-input-wrap">
+              <Search size={18} className="search-icon-inside" />
               <input
                 type="text"
                 placeholder="Search by car name..."
                 value={search}
                 onChange={e => setSearch(e.target.value)}
-                style={{
-                  width: '100%',
-                  padding: '12px 16px 12px 46px',
-                  background: 'rgba(255, 255, 255, 0.04)',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
-                  borderRadius: '10px',
-                  color: '#fff',
-                  outline: 'none'
-                }}
+                className="search-input"
               />
             </div>
             <select
               value={sortBy}
               onChange={e => setSortBy(e.target.value)}
-              style={{
-                padding: '12px 18px',
-                background: '#0a0a0a',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
-                borderRadius: '10px',
-                color: '#fff',
-                outline: 'none',
-                cursor: 'pointer'
-              }}
+              className="sort-select"
             >
               <option value="Recommended">Recommended</option>
               <option value="Price: Low to High">Price: Low to High</option>
@@ -176,14 +156,14 @@ export default function BrowsePage() {
           </div>
 
           {loading ? (
-            <div style={{ textAlign: 'center', padding: '60px', color: 'var(--text-muted)' }}>Loading rental cars...</div>
+            <div className="loading-box">Loading rental cars...</div>
           ) : filtered.length === 0 ? (
-            <div className="card" style={{ padding: '60px', textAlign: 'center' }}>
+            <div className="card empty-box">
               <h3>No cars found matching your criteria</h3>
-              <p style={{ color: 'var(--text-muted)', marginTop: '8px' }}>Try adjusting your search filters</p>
+              <p>Try adjusting your search filters or resetting them</p>
             </div>
           ) : (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '24px' }}>
+            <div className="cars-grid">
               {filtered.map(car => (
                 <div key={car.id} className="featured-car-card card">
                   <div className="fc-image">
@@ -200,9 +180,9 @@ export default function BrowsePage() {
                       <h3>{car.name}</h3>
                       <div className="fc-rating"><Star size={14} fill="#f5a623" color="#f5a623" /> {car.rating}</div>
                     </div>
-                    <div style={{ display: 'flex', gap: '14px', fontSize: '13px', color: '#999', margin: '8px 0 16px' }}>
-                      <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><Users size={14} /> {car.seats} Seats</span>
-                      <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><Fuel size={14} /> {car.fuel}</span>
+                    <div className="car-specs-row">
+                      <span><Users size={14} /> {car.seats} Seats</span>
+                      <span><Fuel size={14} /> {car.fuel}</span>
                       <span>⚙️ {car.transmission}</span>
                     </div>
                     <div className="fc-price">{formatINR(car.pricePerDay)}<span>/day</span></div>

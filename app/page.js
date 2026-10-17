@@ -34,7 +34,7 @@ export default function HomePage() {
         <div className="hero-bg-orb orb1"></div>
         <div className="hero-bg-orb orb2"></div>
         <div className="container hero-content">
-          <div className="hero-text">
+          <div className="hero-text animate-fade-up">
             <span className="badge hero-badge">🚗 India's Premium Car Rental</span>
             <h1 className="hero-title">
               Rent. Drive. <span className="gradient-text">Explore.</span>
@@ -74,7 +74,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="hero-car-image">
+          <div className="hero-car-image animate-fade">
             <div className="hero-car-glow"></div>
             <div className="hero-inner-circle">
                <svg viewBox="0 0 200 200" className="hero-curved-text">
